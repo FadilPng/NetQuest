@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';import {build} from 'esbuild';
+const r=await build({stdin:{contents:"export * from './src/editor/structure';export {RATNA_HOUSE as h} from './src/game/locations/ratnaHouse';",resolveDir:process.cwd(),loader:'ts'},bundle:true,write:false,platform:'node',format:'esm'});
+const {initialRoom,editWall,exportRoom,importRoom,h}=await import('data:text/javascript;base64,'+Buffer.from(r.outputFiles[0].text).toString('base64'));
+const base=initialRoom(h),original=JSON.stringify(base);
+const wall=editWall(base,h,'wall',{x:11,y:4},{x:11,y:8});assert.equal(wall.tiles[6][11],1);assert.equal(base.tiles[6][11],0);
+const door=editWall(wall,h,'door',{x:11,y:6},{x:11,y:6});assert.equal(door.tiles[6][11],0);assert.deepEqual(door.openings,[{x:11,y:6}]);
+assert.deepEqual(importRoom(exportRoom(door,h),h,base),door);
+const erased=editWall(door,h,'erase',{x:11,y:4},{x:11,y:8});assert.deepEqual(erased,base);
+assert.throws(()=>editWall(base,h,'door',{x:11,y:6},{x:11,y:6}));
+for(const pos of [{x:0,y:5},{x:3,y:2},{x:9,y:6},{x:9,y:9}])assert.throws(()=>editWall(base,h,'wall',pos,pos));
+const invalid=JSON.parse(exportRoom(door,h));invalid.tiles[0][0]=0;assert.throws(()=>importRoom(JSON.stringify(invalid),h,base));
+invalid.tiles[0][0]=1;invalid.openings.push({x:11,y:6});assert.throws(()=>importRoom(JSON.stringify(invalid),h,base));
+assert.equal(JSON.stringify(base),original);
+console.log('PASS Editor 3: draw/erase/door, immutable history inputs, v3 round trip, perimeter/furniture/NPC/spawn protection and malformed imports');

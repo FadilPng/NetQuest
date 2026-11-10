@@ -1,0 +1,36 @@
+{
+  "name": "react-vite-tailwind",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "node tests/network.test.mjs",
+    "test:e2e": "playwright test",
+    "editor": "vite --mode editor --host 0.0.0.0 --port 5175",
+    "test:editor": "node tests/editor.test.mjs && playwright test editor.spec.ts",
+    "test:editor3": "node tests/editor3.test.mjs && node tests/restored-house.test.mjs && playwright test editor3.spec.ts"
+  },
+  "dependencies": {
+    "clsx": "2.1.1",
+    "lucide-react": "^1.69.0",
+    "react": "19.2.6",
+    "react-dom": "19.2.6",
+    "tailwind-merge": "3.4.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.0",
+    "@tailwindcss/vite": "4.1.17",
+    "@types/node": "22.19.17",
+    "@types/react": "19.2.7",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "5.1.1",
+    "tailwindcss": "4.1.17",
+    "typescript": "5.9.3",
+    "vite": "^7.3.7",
+    "vite-plugin-singlefile": "2.3.0"
+  }
+}

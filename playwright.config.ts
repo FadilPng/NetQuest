@@ -1,0 +1,2 @@
+import { defineConfig } from '@playwright/test';
+export default defineConfig({ testDir: './tests/browser', testMatch: '*.spec.ts', timeout: 90000, workers: 1, reporter: 'list', use: { actionTimeout: 10000, baseURL: 'http://127.0.0.1:5174', viewport: { width: 1365, height: 900 }, screenshot: 'only-on-failure', trace: 'retain-on-failure' }, outputDir: 'test-results', webServer: { command: 'npm run dev -- --host 0.0.0.0 --port 5174 --strictPort', url: 'http://127.0.0.1:5174', reuseExistingServer: true } });
